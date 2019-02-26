@@ -10,11 +10,11 @@ public class mPlayer {
     private String handType;
     private int score;
 
-    public mPlayer(int inPosition,int inHandCount,String inHandtype, int inScore){
-        position = inPosition;
+    public mPlayer(){
+        position = 0;
         handCount = new ArrayList<mTiles>(14);
-        handType = inHandtype;
-        score = inScore;
+        handType = "";
+        score = 0;
     }
 
     public int getPosition(){
@@ -23,6 +23,9 @@ public class mPlayer {
 
     public ArrayList<mTiles> getHandCount(){
         return this.handCount;
+    }
+    public void addTile(mTiles in){
+         handCount.add(in);
     }
 
     public String getHandType(){

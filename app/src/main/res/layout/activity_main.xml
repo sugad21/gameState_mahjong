@@ -43,7 +43,7 @@
                 android:id="@+id/editText7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:ems="10"
                 android:inputType="textMultiLine"
                 android:text="Tiles:" />
@@ -52,7 +52,7 @@
                 android:id="@+id/editText19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:ems="10"
                 android:inputType="textMultiLine"
                 android:text="Current Hands:" />
@@ -99,7 +99,7 @@
                 android:id="@+id/editText13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:ems="10"
                 android:inputType="textMultiLine"
                 android:text="Tiles:" />
@@ -108,7 +108,7 @@
                 android:id="@+id/editText8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:ems="10"
                 android:inputType="textMultiLine"
                 android:text="Current Hands:" />
@@ -155,7 +155,7 @@
                 android:id="@+id/editText15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:ems="10"
                 android:inputType="textMultiLine"
                 android:text="Tiles:" />
@@ -164,7 +164,7 @@
                 android:id="@+id/editText9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:ems="10"
                 android:inputType="textMultiLine"
                 android:text="Current Hands:" />
@@ -211,7 +211,7 @@
                 android:id="@+id/editText17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:ems="10"
                 android:inputType="textMultiLine"
                 android:text="Tiles:" />
@@ -220,7 +220,7 @@
                 android:id="@+id/editText10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:ems="10"
                 android:inputType="textMultiLine"
                 android:text="Current Hands:" />
@@ -292,7 +292,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                android:text="Turn Status:"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <EditText
@@ -302,7 +317,8 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textMultiLine"
-                android:text="Winner:" />
+                android:text="Winner:"
+                android:textSize="24sp" />
 
         </LinearLayout>
 
