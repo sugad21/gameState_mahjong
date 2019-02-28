@@ -81,6 +81,28 @@ public class GameState {
         recentDiscard = in.getRecentDiscard();
     }
 
+    public void initTiles ()
+    {
+        wall = new ArrayList<mTiles> ();
+        for(int i = 0; i < 9; i++)
+        {
+            wall.set(4*i, new mTiles(i, "Bamboo"));
+            wall.set(4*i+1, new mTiles(i, "Bamboo"));
+            wall.set(4*i+2, new mTiles(i, "Bamboo"));
+            wall.set(4*i+3, new mTiles(i, "Bamboo"));
+            wall.set(4*i+36, new mTiles(i, "Characters"));
+            wall.set(4*i+37, new mTiles(i, "Characters"));
+            wall.set(4*i+38, new mTiles(i, "Characters"));
+            wall.set(4*i+39, new mTiles(i, "Characters"));
+            wall.set(4*i+72, new mTiles(i, "Dots"));
+            wall.set(4*i+73, new mTiles(i, "Dots"));
+            wall.set(4*i+74, new mTiles(i, "Dots"));
+            wall.set(4*i+75, new mTiles(i, "Dots"));
+            //initialized the first 108 tiles, 4 of each tile of each suit
+
+        }
+    }
+
     public mTiles getRecentDiscard(){
         return recentDiscard;
     }
@@ -208,6 +230,15 @@ public class GameState {
         This method will check the current players hand once picked up a discarded tile
         or wall tile to see all the different combinations of winning hands. So
          */
+    }
+
+    public String toString()
+    {
+        String toReturn = "";
+
+        //Should print format all gameState info into a single string to be returned
+
+        return toReturn;
     }
 
 
