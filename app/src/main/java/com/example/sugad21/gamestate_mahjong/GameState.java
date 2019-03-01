@@ -293,21 +293,21 @@ public class GameState {
 
 
     public String toString() {
-        // String PlayerInfo = "Player Information: \n";
+         String PlayerInfo = "Player Information: \n";
         String GameInfo = "General Game Information: \n";
-    /*
-        for(int i = 0; i <= this.gamePlayers.size(); i++){
+
+        for(int i = 0; i < this.gamePlayers.size(); i++){
             PlayerInfo = PlayerInfo + "Position: " + this.gamePlayers.get(i).getPosition()+
-                    "Players Hand: "+ this.gamePlayers.get(i).getHand()+
+                    "Players Hand: "+ this.gamePlayers.get(i).getHand().+
                     "Players Discarded Cards" + this.gamePlayers.get(i).getDiscardHand()+
                     "Score"+ this.gamePlayers.get(i).getScore();
         }
-        */
+
         GameInfo = GameInfo + "# of Tiles in Wall: " + getWall().size() +
                 "Most Recent Discarded Tile: " + getRecentDiscard();
         //Should print format all gameState info into a single string to be returned
 
-        return GameInfo;
+        return GameInfo + PlayerInfo;
     }
 
 
