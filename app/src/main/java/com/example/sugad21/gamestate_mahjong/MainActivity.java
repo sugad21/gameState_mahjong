@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         gameStatus.setText("");
 
         firstInstance.discardTile(firstInstance.getGamePlayers().get(0).getHand().get(2),0);
-        gameStatus.append("Player at seating East has discarded a tile (suit: dot; value: 3");
+        gameStatus.append("Player at seating East has discarded a tile");
         firstInstance.drawFromWall(firstInstance.getWall().get(0),1);
         firstInstance.discardTile(firstInstance.getPlayerTiles().get(0),1);
         gameStatus.append("Player at seating North has drawn a tile and then discarded it");

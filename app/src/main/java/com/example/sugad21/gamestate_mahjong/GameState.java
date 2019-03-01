@@ -26,19 +26,26 @@ public class GameState {
         lastTurn = 0;
         recentDiscard = getRecentDiscard();
 
-
-        mPlayer EastPlayer = new mPlayer(0);
-        mPlayer NorthPlayer = new mPlayer(1);
-        mPlayer WestPlayer = new mPlayer(2);
-        mPlayer SouthPlayer = new mPlayer(3);
+        initTiles();
+        mPlayer EastPlayer = new mPlayer(0,playerTiles);
+        mPlayer NorthPlayer = new mPlayer(1,playerTiles);
+        mPlayer WestPlayer = new mPlayer(2,playerTiles);
+        mPlayer SouthPlayer = new mPlayer(3,playerTiles);
 
         gamePlayers.add(EastPlayer);
         gamePlayers.add(NorthPlayer);
         gamePlayers.add(WestPlayer);
         gamePlayers.add(SouthPlayer);
 
-        initTiles();
-        initHand();
+        EastPlayer.setHand(initHand0());
+        NorthPlayer.setHand(initHand1());
+        WestPlayer.setHand(initHand2());
+        SouthPlayer.setHand(initHand3());
+
+
+
+
+
     }
 
     /*
@@ -63,7 +70,22 @@ public class GameState {
         }
 
         in.initTiles();
-        in.initHand();
+        mPlayer EastPlayer = new mPlayer(0,in.playerTiles);
+        mPlayer NorthPlayer = new mPlayer(1,in.playerTiles);
+        mPlayer WestPlayer = new mPlayer(2,in.playerTiles);
+        mPlayer SouthPlayer = new mPlayer(3,in.playerTiles);
+
+        in.gamePlayers.add(EastPlayer);
+        in.gamePlayers.add(NorthPlayer);
+        in.gamePlayers.add(WestPlayer);
+        in.gamePlayers.add(SouthPlayer);
+
+        EastPlayer.setHand(in.initHand0());
+        NorthPlayer.setHand(in.initHand1());
+        WestPlayer.setHand(in.initHand2());
+        SouthPlayer.setHand(in.initHand3());
+
+
 
         turn = in.getTurn();
         lastTurn = in.getLastTurn();
@@ -124,34 +146,51 @@ public class GameState {
         Collections.shuffle(wall);
     }
 
-    public void initHand() {
+    public ArrayList<mTiles> initHand0() {
 
-        playerTiles = new ArrayList<mTiles>();
-
-        if (getGamePlayers().get(0).getPosition() == 0) {
-            for (int i = 0; i < 14; i++) {
-                playerTiles.add(getWall().get(i));
-                getWall().remove(i);
-                gamePlayers.get(0).setHand(playerTiles);
-            }
-            for(int j = 14; j < 27; j++){
-                playerTiles.add(getWall().get(j));
-                getWall().remove(j);
-                gamePlayers.get(1).setHand(playerTiles);
-            }
-            for(int k = 27; k < 40; k++){
-                playerTiles.add(getWall().get(k));
-                getWall().remove(k);
-                gamePlayers.get(2).setHand(playerTiles);
-            }
-            for(int l = 40; l < 53; l++){
-                playerTiles.add(getWall().get(l));
-                getWall().remove(l);
-                gamePlayers.get(3).setHand(playerTiles);
-            }
+        for (int i = 0; i < 14; i++) {
+            gamePlayers.get(0).addTiletoHand(getWall().get(i));
+            getWall().remove(getWall().get(i));
             setWall(getWall());
+            gamePlayers.get(0).setHand(gamePlayers.get(0).getHand());
 
         }
+        return gamePlayers.get(0).getHand();
+    }
+
+        public ArrayList<mTiles> initHand1() {
+            for (int j = 14; j < 27; j++) {
+                gamePlayers.get(1).addTiletoHand(getWall().get(j));
+                getWall().remove(getWall().get(j));
+                setWall(getWall());
+                gamePlayers.get(1).setHand(gamePlayers.get(1).getHand());
+
+            }
+            return gamePlayers.get(1).getHand();
+        }
+
+
+            public ArrayList<mTiles> initHand2() {
+                for (int k = 27; k < 40; k++) {
+                    gamePlayers.get(2).addTiletoHand(getWall().get(k));
+                    getWall().remove(getWall().get(k));
+                    setWall(getWall());
+                    gamePlayers.get(2).setHand(gamePlayers.get(2).getHand());
+
+                }
+                return gamePlayers.get(2).getHand();
+            }
+
+                public ArrayList<mTiles> initHand3() {
+            for(int l = 40; l < 53; l++){
+                gamePlayers.get(3).addTiletoHand(getWall().get(l));
+                getWall().remove(getWall().get(l));
+                setWall(getWall());
+                gamePlayers.get(3).setHand(gamePlayers.get(3).getHand());
+
+            }
+            setWall(getWall());
+        return gamePlayers.get(3).getHand();
     }
 
     public mTiles getRecentDiscard() {
@@ -225,6 +264,7 @@ public class GameState {
         getWall().remove(drawnTile);
         setPlayerTiles(getPlayerTiles());
         setWall(getWall());
+        nextTurn(newPlayer);
         return true;
     }
 
@@ -240,6 +280,7 @@ public class GameState {
         }
         setRecentDiscard(discardTile);
         setDiscardTiles(discardTile);
+        newPlayer.setDiscardHand(discardTiles);
         newPlayer.removeTile(discardTile);
         newPlayer.setHand(newPlayer.getHand());
 
@@ -266,7 +307,14 @@ public class GameState {
         return false;
     }
 
-    public boolean currentTurn(mPlayer pTurn) {
+    public boolean currentTurn(mPlayer cTurn){
+        if(getTurn() == cTurn.getPosition()){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean nextTurn(mPlayer pTurn) {
         /*
         Once current player is done, this method is called in order to move to next player
          */
@@ -296,12 +344,13 @@ public class GameState {
         for(int i = 0; i < this.gamePlayers.size(); i++){
             PlayerInfo = PlayerInfo + "Position: " + this.gamePlayers.get(i).getPosition()+ "\n"+
                     "Players Hand: "+ this.gamePlayers.get(i).getHand().toString()+ "\n" +
-                    "Players Discarded Cards" + this.recentDiscard+ "\n" +
+                    "Players Discarded Cards" + this.gamePlayers.get(i).getDiscardHand()+ "\n" +
                     "Score"+ this.gamePlayers.get(i).getScore()+"\n";
         }
 
+
         GameInfo = GameInfo + "# of Tiles in Wall: " + getWall().size() + "\n" +
-                "Most Recent Discarded Tile: " + getRecentDiscard() + "\n";
+                "Most Recent Discarded Tile: " + gamePlayers.get(0).getDiscardHand() + "\n";
         //Should print format all gameState info into a single string to be returned
 
         return GameInfo + PlayerInfo;
