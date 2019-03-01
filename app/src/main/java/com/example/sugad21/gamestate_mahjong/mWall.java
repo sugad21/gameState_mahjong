@@ -10,23 +10,7 @@ public class mWall {
 
     public mWall(){
         String newSuit = "";
-        wall = new ArrayList<mTiles>();
-        for(int j = 1; j < 4; j++){
-            if(j == 1){
-                newSuit = "Bamboo";
-            }
-            else if(j == 2){
-                newSuit = "Character";
-            }
-            else if(j == 3){
-                newSuit = "Dots";
-            }
-        }
-        for(int i = 1 ; i < 10; i++){
-            mTiles newTile = new mTiles(i,newSuit);
-            wall.add(newTile);
-        }
-        Collections.shuffle(wall);
+
     }
 
     public int getWallSize(){

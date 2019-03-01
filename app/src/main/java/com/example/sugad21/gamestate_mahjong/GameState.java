@@ -145,6 +145,7 @@ public class GameState {
     }
 
     public ArrayList<mTiles> getPlayerTiles() {
+
         return playerTiles;
     }
 
@@ -219,27 +220,63 @@ public class GameState {
             setDiscardTiles(discardTile);
             newPlayer.removeTile(discardTile);
             newPlayer.setHand(newPlayer.getHand());
+
             return  true;
+    }
+
+    /*
+    if a user just discarded a card, then anyone can pick up the card just discarded
+    and choose to discard it or keep it
+     */
+    public boolean drawDiscardTile(mTiles drawDTile, int position){
+        mPlayer newPlayer = this.gamePlayers.get(position);
+        if(discardTile(recentDiscard,getLastTurn())){
+            for(int i = 0; i <= gamePlayers.size();i++){
+                if(newPlayer.getPosition() != gamePlayers.get(i).getPosition()){
+                    playerTiles.add(drawDTile);
+                    getDiscardTiles().remove(drawDTile);
+                    setRecentDiscard(null);
+                    setPlayerTiles(getPlayerTiles());
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public boolean currentTurn(mPlayer pTurn) {
         /*
         Once current player is done, this method is called in order to move to next player
          */
-        if (getTurn() == pTurn.getPosition()) {
-            return true;
-        } else {
-            return false;
-        }
+       if(getTurn() == pTurn.getPosition()){
+
+           switch(pTurn.getPosition()){
+               case 0: setTurn(1);
+               case 1: setTurn(2);
+               case 2: setTurn(3);
+               case 3: setTurn(0);
+           }
+           return true;
+       }
+       return false;
     }
 
 
     public String toString() {
-        String toReturn = "";
+        String PlayerInfo = "Player Information: \n";
+        String GameInfo = "General Game Information: \n";
 
+        for(int i = 0; i <= this.gamePlayers.size(); i++){
+            PlayerInfo = PlayerInfo + "Position: " + this.gamePlayers.get(i).getPosition()+
+                    "Players Hand: "+ this.gamePlayers.get(i).getHand()+
+                    "Players Discarded Cards" + this.gamePlayers.get(i).getDiscardHand()+
+                    "Score"+ this.gamePlayers.get(i).getScore();
+        }
+        GameInfo = GameInfo + "# of Tiles in Wall: " + getWall().size() +
+                "Most Recent Discarded Tile: " + getRecentDiscard();
         //Should print format all gameState info into a single string to be returned
 
-        return toReturn;
+        return GameInfo + PlayerInfo;
     }
 
 

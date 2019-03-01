@@ -9,6 +9,7 @@ public class mPlayer {
     private ArrayList<mTiles> hand;
     private String handType;
     private int score;
+    private ArrayList<mTiles> discardHand;
 
 
 
@@ -18,6 +19,8 @@ public class mPlayer {
         hand = new ArrayList<mTiles>(14);
         handType = "";
         score = 0;
+        discardHand = new ArrayList<mTiles>(0);
+
     }
 
     public int getPosition() {
@@ -28,6 +31,13 @@ public class mPlayer {
         return this.hand;
     }
 
+    public ArrayList<mTiles> getDiscardHand(){
+        return this.discardHand;
+    }
+
+    public void setDiscardHand(ArrayList<mTiles> newDHand){
+        this.hand = newDHand;
+    }
     public String getHandType() {
         return this.handType;
     }
