@@ -86,20 +86,45 @@ public class GameState {
         wall = new ArrayList<mTiles> ();
         for(int i = 0; i < 9; i++)
         {
-            wall.set(4*i, new mTiles(i, "Bamboo"));
-            wall.set(4*i+1, new mTiles(i, "Bamboo"));
-            wall.set(4*i+2, new mTiles(i, "Bamboo"));
-            wall.set(4*i+3, new mTiles(i, "Bamboo"));
-            wall.set(4*i+36, new mTiles(i, "Characters"));
-            wall.set(4*i+37, new mTiles(i, "Characters"));
-            wall.set(4*i+38, new mTiles(i, "Characters"));
-            wall.set(4*i+39, new mTiles(i, "Characters"));
-            wall.set(4*i+72, new mTiles(i, "Dots"));
-            wall.set(4*i+73, new mTiles(i, "Dots"));
-            wall.set(4*i+74, new mTiles(i, "Dots"));
-            wall.set(4*i+75, new mTiles(i, "Dots"));
+            //Bamboo suit 4 of one value made at a time 1-9 (mTiles[0-31])
+            wall.set(4*i, new mTiles(i+1, "Bamboo"));
+            wall.set(4*i+1, new mTiles(i+1, "Bamboo"));
+            wall.set(4*i+2, new mTiles(i+1, "Bamboo"));
+            wall.set(4*i+3, new mTiles(i+1, "Bamboo"));
+            //Characters suit 4 of one value made at a time 1-9 (mTiles[36-71])
+            wall.set(4*i+36, new mTiles(i+1, "Characters"));
+            wall.set(4*i+37, new mTiles(i+1, "Characters"));
+            wall.set(4*i+38, new mTiles(i+1, "Characters"));
+            wall.set(4*i+39, new mTiles(i+1, "Characters"));
+            //Dots suit 4 of one value made at a time 1-9 (mTiles[72-107])
+            wall.set(4*i+72, new mTiles(i+1, "Dots"));
+            wall.set(4*i+73, new mTiles(i+1, "Dots"));
+            wall.set(4*i+74, new mTiles(i+1, "Dots"));
+            wall.set(4*i+75, new mTiles(i+1, "Dots"));
             //initialized the first 108 tiles, 4 of each tile of each suit
+        }
 
+        //Values of wind : 0 - west, 1 - south, 2 - east, 3 - north
+        //Winds suit 4 of one wind made on each loop (mTiles[108-123])
+        for(int j = 0; j < 4; j ++)
+        {
+            wall.set(4*j+108, new mTiles(j+1, "Winds"));
+            wall.set(4*j+109, new mTiles(j+1, "Winds"));
+            wall.set(4*j+110, new mTiles(j+1, "Winds"));
+
+            if(j != 3)
+            {
+                //value of dragon : 0 - red dragon, 1 - green dragon, 2 - white dragon
+                //Dragons suit 4 of one dragon made on each loop (mTiles[124-135])
+                wall.set(4*j+124, new mTiles(j+1, "Dragon"));
+                wall.set(4*j+125, new mTiles(j+1, "Dragon"));
+                wall.set(4*j+126, new mTiles(j+1, "Dragon"));
+                wall.set(4*j+127, new mTiles(j+1, "Dragon"));
+            }
+
+            //Flower and season tiles one of each value and suit made (mTiles[136-143])
+            wall.set(j+136, new mTiles(j+1, "Flower"));
+            wall.set(j+140, new mTiles(j+1, "Season"));
         }
     }
 
