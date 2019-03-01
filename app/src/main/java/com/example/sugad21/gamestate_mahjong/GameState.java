@@ -31,7 +31,7 @@ public class GameState {
 
         //players are added to list of players
         for (int i = 0; i < 5; i++) {
-            mPlayer pInfo = new mPlayer();
+            mPlayer pInfo = new mPlayer(0);
             gamePlayers.add(pInfo);
         }
         Random rand = new Random();
@@ -126,6 +126,23 @@ public class GameState {
             //Flower and season tiles one of each value and suit made (mTiles[136-143])
             wall.set(j+136, new mTiles(j+1, "Flower"));
             wall.set(j+140, new mTiles(j+1, "Season"));
+        }
+    }
+
+    public void initHand(){
+        playerTiles = new ArrayList<mTiles>();
+
+        if(getGamePlayers().get(0).getPosition() == 3){
+            for(int i = 1; 4*i < 54; i++){
+                for(int j = 1; j <= i;i++){
+                    playerTiles.add(wall.get(i));
+                    getWall().remove(wall.get(i));
+
+                    getGamePlayers().get(
+
+                }
+            }
+
         }
     }
 
