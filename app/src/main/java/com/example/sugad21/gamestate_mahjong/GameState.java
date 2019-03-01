@@ -111,6 +111,7 @@ public class GameState {
             wall.set(4*j+108, new mTiles(j+1, "Winds"));
             wall.set(4*j+109, new mTiles(j+1, "Winds"));
             wall.set(4*j+110, new mTiles(j+1, "Winds"));
+            wall.set(4*j+111, new mTiles(j+1, "Winds"));
 
             if(j != 3)
             {
