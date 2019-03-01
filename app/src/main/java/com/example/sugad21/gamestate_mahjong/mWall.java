@@ -6,6 +6,7 @@ import java.util.Collections;
 public class mWall {
 
     private ArrayList<mTiles> wall;
+    private int sWall;
 
     public mWall(){
         String newSuit = "";
@@ -34,6 +35,10 @@ public class mWall {
 
     public ArrayList<mTiles> getWall() {
         return wall;
+    }
+
+    public void setWallsize(int in){
+        this.sWall = in;
     }
 
     public mTiles removeTile(int index){
