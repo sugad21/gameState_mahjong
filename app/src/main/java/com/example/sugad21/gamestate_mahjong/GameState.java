@@ -24,7 +24,7 @@ public class GameState {
         discardTiles = new ArrayList<mTiles>();
         turn = 0;
         lastTurn = 0;
-        recentDiscard = null;
+        recentDiscard = getRecentDiscard();
 
 
         mPlayer EastPlayer = new mPlayer(0);
@@ -53,14 +53,9 @@ public class GameState {
         }
 
         wall = new ArrayList<mTiles>();
-        for (int j = 0; j < in.getWall().size(); j++) {
-            wall.add(in.getWall().get(j));
-        }
 
         playerTiles = new ArrayList<mTiles>();
-        for (int k = 0; k < in.getPlayerTiles().size(); k++) {
-            playerTiles.add(in.getPlayerTiles().get(k));
-        }
+
 
         discardTiles = new ArrayList<mTiles>();
         for (int l = 0; l < in.getDiscardTiles().size(); l++) {
@@ -76,7 +71,7 @@ public class GameState {
     }
 
     public void initTiles() {
-        wall = new ArrayList<mTiles>(144);
+        wall = new ArrayList<mTiles>();
         for (int i = 0; i < 9; i++) {
             //Bamboo suit 4 of one value made at a time 1-9 (mTiles[0-31])
             wall.add(4 * i, new mTiles(i + 1, "Bamboo"));
@@ -131,7 +126,7 @@ public class GameState {
 
     public void initHand() {
 
-
+        playerTiles = new ArrayList<mTiles>();
 
         if (getGamePlayers().get(0).getPosition() == 0) {
             for (int i = 0; i < 14; i++) {
@@ -154,6 +149,7 @@ public class GameState {
                 getWall().remove(l);
                 gamePlayers.get(3).setHand(playerTiles);
             }
+            setWall(getWall());
 
         }
     }
@@ -295,16 +291,17 @@ public class GameState {
     public String toString() {
          String PlayerInfo = "Player Information: \n";
         String GameInfo = "General Game Information: \n";
+        String Hand = "";
 
         for(int i = 0; i < this.gamePlayers.size(); i++){
-            PlayerInfo = PlayerInfo + "Position: " + this.gamePlayers.get(i).getPosition()+
-                    "Players Hand: "+ this.gamePlayers.get(i).getHand().+
-                    "Players Discarded Cards" + this.gamePlayers.get(i).getDiscardHand()+
-                    "Score"+ this.gamePlayers.get(i).getScore();
+            PlayerInfo = PlayerInfo + "Position: " + this.gamePlayers.get(i).getPosition()+ "\n"+
+                    "Players Hand: "+ this.gamePlayers.get(i).getHand().toString()+ "\n" +
+                    "Players Discarded Cards" + this.recentDiscard+ "\n" +
+                    "Score"+ this.gamePlayers.get(i).getScore()+"\n";
         }
 
-        GameInfo = GameInfo + "# of Tiles in Wall: " + getWall().size() +
-                "Most Recent Discarded Tile: " + getRecentDiscard();
+        GameInfo = GameInfo + "# of Tiles in Wall: " + getWall().size() + "\n" +
+                "Most Recent Discarded Tile: " + getRecentDiscard() + "\n";
         //Should print format all gameState info into a single string to be returned
 
         return GameInfo + PlayerInfo;
