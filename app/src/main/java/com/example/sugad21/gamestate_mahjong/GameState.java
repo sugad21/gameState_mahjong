@@ -132,23 +132,24 @@ public class GameState {
     public void initHand() {
 
 
+
         if (getGamePlayers().get(0).getPosition() == 0) {
-            for (int i = 0; i < 15; i++) {
+            for (int i = 0; i < 14; i++) {
                 playerTiles.add(getWall().get(i));
                 getWall().remove(i);
                 gamePlayers.get(0).setHand(playerTiles);
             }
-            for(int j = 15; j < 29; j++){
+            for(int j = 14; j < 27; j++){
                 playerTiles.add(getWall().get(j));
                 getWall().remove(j);
                 gamePlayers.get(1).setHand(playerTiles);
             }
-            for(int k = 29; k < 42; k++){
+            for(int k = 27; k < 40; k++){
                 playerTiles.add(getWall().get(k));
                 getWall().remove(k);
                 gamePlayers.get(2).setHand(playerTiles);
             }
-            for(int l = 42; l < 55; l++){
+            for(int l = 40; l < 53; l++){
                 playerTiles.add(getWall().get(l));
                 getWall().remove(l);
                 gamePlayers.get(3).setHand(playerTiles);
