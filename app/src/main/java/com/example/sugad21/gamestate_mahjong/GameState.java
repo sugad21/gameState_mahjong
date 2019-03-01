@@ -27,10 +27,10 @@ public class GameState {
         recentDiscard = getRecentDiscard();
 
         initTiles();
-        mPlayer EastPlayer = new mPlayer(0,playerTiles);
-        mPlayer NorthPlayer = new mPlayer(1,playerTiles);
-        mPlayer WestPlayer = new mPlayer(2,playerTiles);
-        mPlayer SouthPlayer = new mPlayer(3,playerTiles);
+        mPlayer EastPlayer = new mPlayer(0, playerTiles);
+        mPlayer NorthPlayer = new mPlayer(1, playerTiles);
+        mPlayer WestPlayer = new mPlayer(2, playerTiles);
+        mPlayer SouthPlayer = new mPlayer(3, playerTiles);
 
         gamePlayers.add(EastPlayer);
         gamePlayers.add(NorthPlayer);
@@ -43,48 +43,54 @@ public class GameState {
         SouthPlayer.setHand(initHand3());
 
 
-
-
-
     }
 
     /*
     Copy Constructor to save current state of game as a copy, so original
     isn't used for instance variables
      */
+    /*
+    External Citation:
+    Problem: Adding player of collection to currrent game players
+    Source: Used example of Pig State we did in lab
+    Solution: use the add method already implemented with arrayLists
+     */
     public GameState(GameState in) {
 
         gamePlayers = new ArrayList<mPlayer>();
         for (int i = 0; i < in.gamePlayers.size(); i++) {
-            gamePlayers.add(in.getGamePlayers().get(i));
+            gamePlayers.add(in.gamePlayers.get(i));
         }
 
+
         wall = new ArrayList<mTiles>();
+        for (int m = 0; m < in.getWall().size(); m++) {
+            wall.add(in.wall.get(m));
+        }
 
         playerTiles = new ArrayList<mTiles>();
 
 
         discardTiles = new ArrayList<mTiles>();
         for (int l = 0; l < in.getDiscardTiles().size(); l++) {
-            discardTiles.add(in.getDiscardTiles().get(l));
+            discardTiles.add(in.discardTiles.get(l));
         }
 
         in.initTiles();
-        mPlayer EastPlayer = new mPlayer(0,in.playerTiles);
-        mPlayer NorthPlayer = new mPlayer(1,in.playerTiles);
-        mPlayer WestPlayer = new mPlayer(2,in.playerTiles);
-        mPlayer SouthPlayer = new mPlayer(3,in.playerTiles);
+        mPlayer EastPlayer = new mPlayer(0, in.playerTiles);
+        mPlayer NorthPlayer = new mPlayer(1, in.playerTiles);
+        mPlayer WestPlayer = new mPlayer(2, in.playerTiles);
+        mPlayer SouthPlayer = new mPlayer(3, in.playerTiles);
 
-        in.gamePlayers.add(EastPlayer);
-        in.gamePlayers.add(NorthPlayer);
-        in.gamePlayers.add(WestPlayer);
-        in.gamePlayers.add(SouthPlayer);
+        in.gamePlayers.set(0, EastPlayer);
+        in.gamePlayers.set(1, NorthPlayer);
+        in.gamePlayers.set(2, WestPlayer);
+        in.gamePlayers.set(3, SouthPlayer);
 
         EastPlayer.setHand(in.initHand0());
         NorthPlayer.setHand(in.initHand1());
         WestPlayer.setHand(in.initHand2());
         SouthPlayer.setHand(in.initHand3());
-
 
 
         turn = in.getTurn();
@@ -143,6 +149,13 @@ public class GameState {
             wall.add(j + 140, new mTiles(j + 1, "Season"));
         }
         */
+
+        /*
+        External Citation:
+        Problem: Shuffling and randomizing the Wall
+        Source: https://www.geeksforgeeks.org/collections-shuffle-java-examples/
+        Solution: use Collection.shuffle(object);
+         */
         Collections.shuffle(wall);
     }
 
@@ -153,43 +166,42 @@ public class GameState {
             getWall().remove(getWall().get(i));
             setWall(getWall());
             gamePlayers.get(0).setHand(gamePlayers.get(0).getHand());
-
         }
         return gamePlayers.get(0).getHand();
     }
 
-        public ArrayList<mTiles> initHand1() {
-            for (int j = 14; j < 27; j++) {
-                gamePlayers.get(1).addTiletoHand(getWall().get(j));
-                getWall().remove(getWall().get(j));
-                setWall(getWall());
-                gamePlayers.get(1).setHand(gamePlayers.get(1).getHand());
-
-            }
-            return gamePlayers.get(1).getHand();
-        }
-
-
-            public ArrayList<mTiles> initHand2() {
-                for (int k = 27; k < 40; k++) {
-                    gamePlayers.get(2).addTiletoHand(getWall().get(k));
-                    getWall().remove(getWall().get(k));
-                    setWall(getWall());
-                    gamePlayers.get(2).setHand(gamePlayers.get(2).getHand());
-
-                }
-                return gamePlayers.get(2).getHand();
-            }
-
-                public ArrayList<mTiles> initHand3() {
-            for(int l = 40; l < 53; l++){
-                gamePlayers.get(3).addTiletoHand(getWall().get(l));
-                getWall().remove(getWall().get(l));
-                setWall(getWall());
-                gamePlayers.get(3).setHand(gamePlayers.get(3).getHand());
-
-            }
+    public ArrayList<mTiles> initHand1() {
+        for (int j = 14; j < 27; j++) {
+            gamePlayers.get(1).addTiletoHand(getWall().get(j));
+            getWall().remove(getWall().get(j));
             setWall(getWall());
+            gamePlayers.get(1).setHand(gamePlayers.get(1).getHand());
+
+        }
+        return gamePlayers.get(1).getHand();
+    }
+
+
+    public ArrayList<mTiles> initHand2() {
+        for (int k = 27; k < 40; k++) {
+            gamePlayers.get(2).addTiletoHand(getWall().get(k));
+            getWall().remove(getWall().get(k));
+            setWall(getWall());
+            gamePlayers.get(2).setHand(gamePlayers.get(2).getHand());
+
+        }
+        return gamePlayers.get(2).getHand();
+    }
+
+    public ArrayList<mTiles> initHand3() {
+        for (int l = 40; l < 53; l++) {
+            gamePlayers.get(3).addTiletoHand(getWall().get(l));
+            getWall().remove(getWall().get(l));
+            setWall(getWall());
+            gamePlayers.get(3).setHand(gamePlayers.get(3).getHand());
+
+        }
+        setWall(getWall());
         return gamePlayers.get(3).getHand();
     }
 
@@ -222,10 +234,6 @@ public class GameState {
         return lastTurn;
     }
 
-    public void setGamePlayers(ArrayList<mPlayer> inPlayers) {
-        this.gamePlayers = inPlayers;
-    }
-
     public void setWall(ArrayList<mTiles> inWall) {
         this.wall = inWall;
     }
@@ -240,10 +248,6 @@ public class GameState {
 
     public void setTurn(int inTurn) {
         this.turn = inTurn;
-    }
-
-    public void setLastTurn(int inLast) {
-        this.lastTurn = inLast;
     }
 
     public void setRecentDiscard(mTiles inMTile) {
@@ -278,9 +282,8 @@ public class GameState {
         if (!(currentTurn(newPlayer))) {
             return false;
         }
-        setRecentDiscard(discardTile);
         setDiscardTiles(discardTile);
-        newPlayer.setDiscardHand(discardTiles);
+        newPlayer.setDiscardHand(getDiscardTiles());
         newPlayer.removeTile(discardTile);
         newPlayer.setHand(newPlayer.getHand());
 
@@ -307,8 +310,8 @@ public class GameState {
         return false;
     }
 
-    public boolean currentTurn(mPlayer cTurn){
-        if(getTurn() == cTurn.getPosition()){
+    public boolean currentTurn(mPlayer cTurn) {
+        if (getTurn() == cTurn.getPosition()) {
             return true;
         }
         return false;
@@ -335,25 +338,33 @@ public class GameState {
         return false;
     }
 
-
     public String toString() {
-         String PlayerInfo = "Player Information: \n";
+        String PlayerInfo = "Player Information: \n";
         String GameInfo = "General Game Information: \n";
+        String p = "";
         String Hand = "";
 
-        for(int i = 0; i < this.gamePlayers.size(); i++){
-            PlayerInfo = PlayerInfo + "Position: " + this.gamePlayers.get(i).getPosition()+ "\n"+
-                    "Players Hand: "+ this.gamePlayers.get(i).getHand().toString()+ "\n" +
-                    "Players Discarded Cards" + this.gamePlayers.get(i).getDiscardHand()+ "\n" +
-                    "Score"+ this.gamePlayers.get(i).getScore()+"\n";
+
+        for (int i = 0; i < this.gamePlayers.size(); i++) {
+            PlayerInfo = PlayerInfo + "Position: " + this.gamePlayers.get(i).getPosition() + "\n" +
+                    "Players Hand: " + this.gamePlayers.get(i).getHand().toString() + "\n" +
+                    "Score: " + this.gamePlayers.get(i).getScore() + "\n";
+            for (int j = 0; j < this.gamePlayers.get(3).getDiscardHand().size(); j++) {
+                p = this.gamePlayers.get(0).getDiscardHand().get(j).totalHand() +
+                        this.gamePlayers.get(1).getDiscardHand().get(j).totalHand() +
+                        this.gamePlayers.get(2).getDiscardHand().get(j).totalHand() +
+                        this.gamePlayers.get(3).getDiscardHand().get(j).totalHand();
+            }
+
         }
 
 
-        GameInfo = GameInfo + "# of Tiles in Wall: " + getWall().size() + "\n" +
-                "Most Recent Discarded Tile: " + gamePlayers.get(0).getDiscardHand() + "\n";
+
+        GameInfo = GameInfo + "# of Tiles in Wall: " + getWall().size() + "\n" + "Most Recent Discarded Tile: " + this.getGamePlayers().get(0).getDiscardHand() + "\n";
+
         //Should print format all gameState info into a single string to be returned
 
-        return GameInfo + PlayerInfo;
+        return GameInfo + PlayerInfo + "Discarded Tiles: " + p;
     }
 
 

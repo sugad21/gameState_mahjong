@@ -4,7 +4,6 @@ public class mTiles {
 
     private int value;
     private String suit;
-    private int cardType;
 
     public mTiles(int inValue, String inSuit) {
         value = inValue;

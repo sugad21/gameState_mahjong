@@ -31,17 +31,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         GameState fourthInstance = new GameState(thirdInstance);
         gameStatus.setText("");
 
-        firstInstance.discardTile(firstInstance.getGamePlayers().get(0).getHand().get(2),0);
-        gameStatus.append("Player at seating East has discarded a tile");
+        firstInstance.discardTile(firstInstance.getGamePlayers().get(0).getHand().get(0),0);
+        gameStatus.append("Player at seating East has discarded a tile\n");
         firstInstance.drawFromWall(firstInstance.getWall().get(0),1);
-        firstInstance.discardTile(firstInstance.getPlayerTiles().get(0),1);
-        gameStatus.append("Player at seating North has drawn a tile and then discarded it");
+        firstInstance.discardTile(firstInstance.getGamePlayers().get(1).getHand().get(0),1);
+        gameStatus.append("Player at seating North has drawn a tile and then discarded it\n");
         firstInstance.drawDiscardTile(firstInstance.getRecentDiscard(),3);
-        gameStatus.append("Player 3 has picked up the recently discarded card");
+        gameStatus.append("Player 3 has picked up the recently discarded card\n\n");
         gameStatus.append(firstInstance.toString());
-        gameStatus.append("First Instance Game Status:");
+        gameStatus.append("First Instance Game Status:\n\n");
         gameStatus.append(secondInstance.toString());
-        gameStatus.append("Third Instance Game Status");
+        gameStatus.append("Third Instance Game Status\n\n");
         gameStatus.append(fourthInstance.toString());
 
     }
