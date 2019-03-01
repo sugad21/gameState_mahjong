@@ -13,7 +13,7 @@ public class GameState {
     private ArrayList<mTiles> playerTiles;
     private ArrayList<mTiles> discardTiles;
     private mTiles recentDiscard;
-    private int turnCount;
+    private int turn;
     private int lastTurn;
 
     public GameState() {
@@ -22,12 +22,10 @@ public class GameState {
         wall = new ArrayList<mTiles>();
         playerTiles = new ArrayList<mTiles>();
         discardTiles = new ArrayList<mTiles>();
-        turnCount = 0;
+        turn = 0;
         lastTurn = 0;
         recentDiscard = null;
-        //before play, wall is shuffled with new tiles
-        mWall wallInstance = new mWall();
-        Collections.shuffle(wallInstance.getWall());
+
 
         mPlayer EastPlayer = new mPlayer(0);
         mPlayer NorthPlayer = new mPlayer(1);
@@ -41,23 +39,6 @@ public class GameState {
 
         initTiles();
         initHand();
-
-        /*
-        Random rand = new Random();
-        int wallDie1 = rand.nextInt(5);
-        int wallDie2 = rand.nextInt(5);
-
-        int wSize = wallInstance.getWallSize() - (wallDie1 + wallDie2);
-        int j = 0;
-        for (int i = 0; i <= wSize; i++) {
-            gamePlayers.get(0).addTile(wallInstance.removeTile(0));
-            if (j < gamePlayers.size() - 1) {
-                j++;
-            } else {
-                j = 0;
-            }
-        }
-        */
     }
 
     /*
@@ -86,7 +67,7 @@ public class GameState {
             discardTiles.add(in.getDiscardTiles().get(l));
         }
 
-        turnCount = in.getTurnCount();
+        turn = in.getTurn();
         lastTurn = in.getLastTurn();
         recentDiscard = in.getRecentDiscard();
     }
@@ -133,6 +114,7 @@ public class GameState {
             wall.set(j + 136, new mTiles(j + 1, "Flower"));
             wall.set(j + 140, new mTiles(j + 1, "Season"));
         }
+        Collections.shuffle(wall);
     }
 
     public void initHand() {
@@ -170,8 +152,8 @@ public class GameState {
         return discardTiles;
     }
 
-    public int getTurnCount() {
-        return turnCount;
+    public int getTurn() {
+        return turn;
     }
 
     public int getLastTurn() {
@@ -190,12 +172,12 @@ public class GameState {
         this.playerTiles = inPTiles;
     }
 
-    public void setDiscardTiles(ArrayList<mTiles> inDTiles) {
-        this.discardTiles = inDTiles;
+    public void setDiscardTiles(mTiles inDTiles) {
+        getDiscardTiles().add(inDTiles);
     }
 
-    public void setTurnCount(int inCount) {
-        this.turnCount = inCount;
+    public void setTurn(int inTurn) {
+        this.turn = inTurn;
     }
 
     public void setLastTurn(int inLast) {
@@ -206,54 +188,65 @@ public class GameState {
         this.recentDiscard = inMTile;
     }
 
-    public boolean gameOver() {
-        /*
-        Returns T/F if a player has mahjong and ends game
-         */
-
-    }
-
-    public boolean drawFromWall(mTiles drawnTile) {
+    public boolean drawFromWall(mTiles drawnTile, int position) {
         /*
         if the image of the draw tile is selected, then a tile from the wall array will
         be accessed and this new tile will be added into the array of X player and removed from
         the wall
          */
-        getPlayerTiles().add(drawnTile);
+        mPlayer newPlayer = this.gamePlayers.get(position);
+        if (!(currentTurn(newPlayer))) {
+            return false;
+        }
+        newPlayer.addTiletoHand(drawnTile);
         getWall().remove(drawnTile);
         setPlayerTiles(getPlayerTiles());
+        setWall(getWall());
         return true;
     }
 
-    public boolean discardTile(mTiles discardTile) {
+    public boolean discardTile(mTiles discardTile, int position) {
         /*
         If user selects on tile of own collection during turn, then the tile is
         set to the most recently discarded card and is available for other players
         to take in order of clockwise.
          */
-        mPlayer newPlayer = this.gamePlayers.get(turnCount);
+        mPlayer newPlayer = this.gamePlayers.get(position);
         if (!(currentTurn(newPlayer))) {
             return false;
         }
             setRecentDiscard(discardTile);
+            setDiscardTiles(discardTile);
             newPlayer.removeTile(discardTile);
             newPlayer.setHand(newPlayer.getHand());
-
-
-
+            return  true;
     }
 
     public boolean currentTurn(mPlayer pTurn) {
         /*
         Once current player is done, this method is called in order to move to next player
          */
-        if (getTurnCount() == pTurn.getPosition()) {
+        if (getTurn() == pTurn.getPosition()) {
             return true;
         } else {
             return false;
         }
     }
 
+
+    public String toString() {
+        String toReturn = "";
+
+        //Should print format all gameState info into a single string to be returned
+
+        return toReturn;
+    }
+
+
+    /*
+    All Methods below will be implemented during Alpha Release and will check during hands of
+    each player and check winning conditions
+     */
     public void handCheck(ArrayList<mTiles> pHand) {
         /*
         Checks hand of currentTurnPlayer and if there is a mahjong, then gameOver method is
@@ -263,34 +256,46 @@ public class GameState {
          */
     }
 
+    public boolean gameOver() {
+        /*
+        Returns T/F if a player has mahjong and ends game
+         */
+        return true;
+    }
+
     public boolean pungSet(ArrayList<mTiles> pHand) {
         /*
         returns true if there is a pung in a players hand
          */
+        return true;
     }
 
     public boolean kongSet(ArrayList<mTiles> pHand) {
         /*
         returns true if there is a kong in a players hand
          */
+        return true;
     }
 
     public boolean quintSet(ArrayList<mTiles> pHand) {
         /*
         returns true if there is a quint
          */
+        return true;
     }
 
     public boolean sextetSet(ArrayList<mTiles> pHand) {
         /*
         returns true if sextet
          */
+        return true;
     }
 
     public boolean pairSet(ArrayList<mTiles> pHand) {
         /*
         returns true if pair in hand
          */
+        return true;
     }
 
     public boolean winningHands(ArrayList<mTiles> pHand) {
@@ -298,15 +303,9 @@ public class GameState {
         This method will check the current players hand once picked up a discarded tile
         or wall tile to see all the different combinations of winning hands. So
          */
+        return true;
     }
 
-    public String toString() {
-        String toReturn = "";
-
-        //Should print format all gameState info into a single string to be returned
-
-        return toReturn;
-    }
 
 
 }

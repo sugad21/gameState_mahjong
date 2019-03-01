@@ -9,7 +9,7 @@ public class mPlayer {
     private ArrayList<mTiles> hand;
     private String handType;
     private int score;
-    private String iD;
+
 
 
     public mPlayer(int inPosition) {

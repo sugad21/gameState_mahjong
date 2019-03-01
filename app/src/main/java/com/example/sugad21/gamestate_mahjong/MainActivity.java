@@ -4,18 +4,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button runButton;
+    private EditText gameStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        runButton = (Button)findViewById(R.id.testButton);
+        runButton = (Button)findViewById(R.id.runButton);
         runButton.setOnClickListener(this);
+
+        gameStatus = (EditText)findViewById(R.id.gameStatus);
+
     }
 
     @Override
@@ -24,6 +29,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         GameState secondInstance = new GameState(firstInstance);
         GameState thirdInstance = new GameState();
         GameState fourthInstance = new GameState(thirdInstance);
+        gameStatus.setText("");
+
+        firstInstance.discardTile(new mTiles(3,"dots"),0);
+        gameStatus.append("Player at seating East has discarded a tile (suit: dot; value: 3");
+
+
     }
 
 
