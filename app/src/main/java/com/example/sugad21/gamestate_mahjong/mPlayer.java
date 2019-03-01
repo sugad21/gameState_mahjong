@@ -59,4 +59,9 @@ public class mPlayer {
         hand = new ArrayList<mTiles>();
         hand.add(in);
     }
+
+    public void removeTile(mTiles out){
+        hand = new ArrayList<mTiles>();
+        hand.remove(out);
+    }
 }
