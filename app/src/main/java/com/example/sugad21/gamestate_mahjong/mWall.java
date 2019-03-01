@@ -25,7 +25,4 @@ public class mWall {
         this.sWall = in;
     }
 
-    public mTiles removeTile(int index){
-        return wall.remove(index);
-    }
 }
