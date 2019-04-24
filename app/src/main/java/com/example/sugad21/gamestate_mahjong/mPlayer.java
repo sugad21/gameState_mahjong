@@ -16,7 +16,7 @@ public class mPlayer {
     public mPlayer(int inPosition, ArrayList<mTiles> ownTiles) {
 
         position = inPosition;
-        hand = ownTiles;
+        hand = new ArrayList<> ();
         handType = "";
         score = 0;
         discardHand = new ArrayList<mTiles>();
@@ -67,6 +67,7 @@ public class mPlayer {
     public void setPosition(int newPosition) {
         position = newPosition;
     }
+
     public void addTiletoHand(mTiles in){
         hand.add(in);
     }

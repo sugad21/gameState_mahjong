@@ -2,6 +2,7 @@ package com.example.sugad21.gamestate_mahjong;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
@@ -326,12 +327,16 @@ public class GameState {
             switch (pTurn.getPosition()) {
                 case 0:
                     setTurn(1);
+                    break;
                 case 1:
                     setTurn(2);
+                    break;
                 case 2:
                     setTurn(3);
+                    break;
                 case 3:
                     setTurn(0);
+                    break;
             }
             return true;
         }
@@ -431,5 +436,417 @@ public class GameState {
         return true;
     }
 
+    public boolean mahjongCheck(ArrayList<mTiles> pHand)
+    {
+        ArrayList<mTiles> bamboos = new ArrayList<mTiles> ();
+        ArrayList<mTiles> dots = new ArrayList<mTiles> ();
+        ArrayList<mTiles> characters = new ArrayList<mTiles> ();
 
+        for(int i = 0; i < pHand.size(); i++)
+        {
+            if(pHand.get(i).getSuit() == "Bamboo")
+            {
+                bamboos.add(pHand.get(i));
+            }
+            else if(pHand.get(i).getSuit() == "Dots")
+            {
+                dots.add(pHand.get(i));
+            }
+            else if(pHand.get(i).getSuit() == "Characters")
+            {
+                characters.add(pHand.get(i));
+            }
+        }
+
+        if(checkSuit(bamboos))
+        {
+            if(checkSuit(dots))
+            {
+                if (checkSuit(characters))
+                {
+                    return true;
+                }
+                else
+                {}
+            }
+        }
+        return false;
+    }
+
+    public boolean checkSuit(ArrayList<mTiles> pHand)
+    {
+        ArrayList<mTiles> suitList = pHand;
+        int prevSize = 0;
+        for(int i = 0; i < suitList.size(); i++)
+        {
+            for(int j = i; j < suitList.size(); j++)
+            {
+                if(suitList.get(i).getValue() > suitList.get(j).getValue())
+                {
+                    Collections.swap(suitList, i, j);
+                }
+            }
+        }
+
+        ArrayList<Integer> temp = new ArrayList<> ();
+
+        temp = findLargestSet(suitList);
+        /*
+        for(int i = temp.size()-1; i >= 0; i--)
+        {
+            suitList.remove(temp.get(i).intValue());
+
+        }
+        /*
+
+
+        while(findLargestSet(suitList).size() != 0 && prevSize != suitList.size() )
+        {
+            prevSize = suitList.size();
+            ArrayList<Integer> temp = new ArrayList<> ();
+            temp = findLargestSet(suitList);
+            for(int x = temp.size() - 1; x >= 0; x--)
+            {
+                suitList.remove(temp.get(x));
+            }
+        }
+        */
+
+        prevSize = 1000;
+        ArrayList<Integer> temp1 = new ArrayList<> ();
+        temp1 = findLowestMatching(suitList);
+        /*
+        while(findLowestMatching(suitList).size() != 0 && prevSize != suitList.size())
+        {
+            prevSize = suitList.size();
+            ArrayList<Integer> temp1 = new ArrayList<> ();
+            temp1 = findLowestMatching(suitList);
+            for(int x = temp1.size() - 1; x >= 0; x--)
+            {
+                suitList.remove(temp1.get(x).intValue());
+            }
+        }
+        */
+
+        if(temp1.size()+ temp.size() == suitList.size())
+            return true;
+        else
+            return false;
+    }
+
+    public ArrayList<Integer> findLargestSet(ArrayList<mTiles> suitList)
+    {
+
+
+        //Create var to hold index of current high val of set
+        int prevValInd = 0;
+        //Create arraylist to hold all indexes of tiles part of set
+        ArrayList<Integer> indexes = new ArrayList<Integer>();
+
+        if(suitList.size() == 0) return indexes;
+
+        //Create var to hold the current highest val of set
+        int prevVal = suitList.get(0).getValue();
+
+        //Iterate through all of the tiles
+        for(int i = 0; i < suitList.size() - 1; i++)
+        {
+            prevVal = suitList.get(i).getValue();
+            prevValInd = i;
+            //If i th card val is equal to prevVal+1 then add the index
+            //where prevVal was found to the arraylist
+            if(suitList.get(i+1).getValue() == prevVal + 1 && suitList.get(i).getValue() == prevVal)
+            {
+                indexes.add(prevValInd);
+            }
+            else if(indexes.size() <= 2)
+            {
+                indexes.clear();
+            }
+            else if(prevVal == suitList.get(i-1).getValue()+1)
+            {
+                indexes.add(i);
+
+            }
+        }
+        if(prevVal + 1 == suitList.get(suitList.size()-1).getValue())
+        {
+            indexes.add(suitList.size()-1);
+        }
+
+        //largest set must be at least 3 tiles long
+       return indexes;
+    }
+
+    public ArrayList<Integer> findLowestMatching(ArrayList<mTiles> suitList) {
+        ArrayList<Integer> indexes = new ArrayList<Integer>();
+
+        int heldVal, occurences = 0;
+
+        for (int i = 0; i < suitList.size() - 1; i++) {
+            heldVal = suitList.get(i).getValue();
+
+            if (heldVal == suitList.get(i + 1).getValue()) {
+                indexes.add(i);
+                break;
+            }
+        }
+
+        if(indexes.size() == 0) return indexes;
+
+
+        for (int i = indexes.get(0)+1; i < suitList.size() &&
+                suitList.get(indexes.get(0)).getValue() == suitList.get(i).getValue(); i++)
+        {
+
+            if(suitList.get(indexes.get(0)).getValue() == suitList.get(i).getValue());
+            {
+                indexes.add(i);
+            }
+        }
+
+        if(indexes.size() == suitList.size()) return indexes;
+        //This next if statement is to check if by removing these tiles it would ruin a set
+        //if a tile can be removed without ruining the matching tiles
+
+
+        return indexes;
+    }
+
+    public ArrayList<Integer> findLowestSet(ArrayList<mTiles> suitList)
+    {
+        ArrayList<Integer> indexes = new ArrayList<>();
+
+        for(int i = 0; i < suitList.size(); i++)
+        {
+            for(int j = i; j < suitList.size(); j++)
+            {
+                if(suitList.get(i).getValue() > suitList.get(j).getValue())
+                {
+                    Collections.swap(suitList, i, j);
+                }
+            }
+        }
+
+        int prevVal;
+
+        for(int i = 0; i < suitList.size(); i++)
+        {
+            prevVal = suitList.get(i).getValue();
+
+            for(int j = i + 1; j < suitList.size(); j++)
+            {
+
+                if(suitList.get(j).getValue() == prevVal+1)
+                {
+                    prevVal = suitList.get(j).getValue();
+                    if(indexes.size() == 0) indexes.add(i);
+                    indexes.add(j);
+                }
+            }
+
+            if(indexes.size() > 2) return indexes;
+            else indexes.clear();
+        }
+
+        return indexes;
+    }
+
+    public boolean mahjonggCheck(ArrayList<mTiles> pHand)
+    {
+
+        ArrayList<mTiles> bamboos = new ArrayList<mTiles> ();
+        ArrayList<mTiles> dots = new ArrayList<mTiles> ();
+        ArrayList<mTiles> characters = new ArrayList<mTiles> ();
+
+        for(int i = 0; i < pHand.size(); i++)
+        {
+            if(pHand.get(i).getSuit() == "Bamboo")
+            {
+                bamboos.add(pHand.get(i));
+            }
+            else if(pHand.get(i).getSuit() == "Dots")
+            {
+                dots.add(pHand.get(i));
+            }
+            else if(pHand.get(i).getSuit() == "Characters")
+            {
+                characters.add(pHand.get(i));
+            }
+        }
+
+        if(checkSuit2(bamboos))
+        {
+            if(checkSuit2(dots))
+            {
+                if(checkSuit2(characters))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean checkSuit2 (ArrayList<mTiles> suitList)
+    {
+
+        for(int i = 0; i < suitList.size(); i++)
+        {
+            for(int j = i; j < suitList.size(); j++)
+            {
+                if(suitList.get(i).getValue() > suitList.get(j).getValue())
+                {
+                    Collections.swap(suitList, i, j);
+                }
+            }
+        }
+
+        int prevSize = -1;
+        ArrayList<Integer> temp = findLowestSet(suitList);
+        while(suitList.size() != prevSize)
+        {
+            prevSize = suitList.size();
+            for(int i = temp.size() - 1; i >= 0; i--)
+            {
+                suitList.remove(temp.get(i).intValue());
+            }
+            temp = findLowestSet(suitList);
+        }
+
+        prevSize = -1;
+        if(suitList.size() == 0) return true;
+
+        temp = findLowestMatching(suitList);
+        while(suitList.size() != prevSize)
+        {
+            prevSize = suitList.size();
+            for(int i = temp.size() - 1; i >= 0; i--)
+            {
+                suitList.remove(temp.get(i).intValue());
+            }
+            temp = findLowestMatching(suitList);
+        }
+
+        if(suitList.size() == 0) return true;
+        return false;
+    }
+
+    public ArrayList<mTiles> findPreferredTiles(ArrayList<mTiles> pHand)
+    {
+        ArrayList<mTiles> viableTiles = new ArrayList<> ();
+
+        for(int i = 0; i < pHand.size(); i++)
+        {
+            mTiles curr = new mTiles(pHand.get(i).getValue(), pHand.get(i).getSuit());
+            if(!viableTiles.contains(curr))
+            {
+                viableTiles.add(curr);
+            }
+
+            if(curr.getValue() > 1)
+            {
+                if(!viableTiles.contains(
+                        new mTiles(pHand.get(i).getValue()-1,pHand.get(i).getSuit())))
+                {
+                    viableTiles.add(new mTiles(pHand.get(i).getValue()-1,pHand.get(i).getSuit()));
+                }
+            }
+            if(curr.getValue() < 9)
+            {
+                if(!viableTiles.contains(
+                        new mTiles(pHand.get(i).getValue()+1,pHand.get(i).getSuit())))
+                {
+                    viableTiles.add(new mTiles(pHand.get(i).getValue()+1,pHand.get(i).getSuit()));
+                }
+            }
+        }
+
+        return viableTiles;
+    }
+
+    public mTiles tileToDiscard(ArrayList<mTiles> pHand)
+    {
+        int prevSize = -1;
+
+        ArrayList<mTiles> bamboos = new ArrayList<mTiles> ();
+        ArrayList<mTiles> dots = new ArrayList<mTiles> ();
+        ArrayList<mTiles> characters = new ArrayList<mTiles> ();
+
+        for(int i = 0; i < pHand.size(); i++)
+        {
+            if(pHand.get(i).getSuit() == "Bamboo")
+            {
+                bamboos.add(pHand.get(i));
+            }
+            else if(pHand.get(i).getSuit() == "Dots")
+            {
+                dots.add(pHand.get(i));
+            }
+            else if(pHand.get(i).getSuit() == "Characters")
+            {
+                characters.add(pHand.get(i));
+            }
+        }
+
+        if(!checkSuit2(bamboos))
+        {
+            if(findBadTile(bamboos) != null) return findBadTile(bamboos);
+        }
+        if(!checkSuit2(dots))
+        {
+            if(findBadTile(dots) != null) return findBadTile(dots);
+        }
+        if(!checkSuit2(characters))
+        {
+            if(findBadTile(characters) != null) return findBadTile(characters);
+        }
+        return null;
+    }
+
+    public mTiles findBadTile(ArrayList<mTiles> suitList)
+    {
+        for(int i = 0; i < suitList.size(); i++)
+        {
+            for(int j = i; j < suitList.size(); j++)
+            {
+                if(suitList.get(i).getValue() > suitList.get(j).getValue())
+                {
+                    Collections.swap(suitList, i, j);
+                }
+            }
+        }
+
+        int prevSize = -1;
+        ArrayList<Integer> temp = findLowestSet(suitList);
+        while(suitList.size() != prevSize)
+        {
+            prevSize = suitList.size();
+            for(int i = temp.size() - 1; i >= 0; i--)
+            {
+                suitList.remove(temp.get(i).intValue());
+            }
+            temp = findLowestSet(suitList);
+        }
+
+        prevSize = -1;
+        if(suitList.size() == 0) return null;
+
+        temp = findLowestMatching(suitList);
+        while(suitList.size() != prevSize)
+        {
+            prevSize = suitList.size();
+            for(int i = temp.size() - 1; i >= 0; i--)
+            {
+                suitList.remove(temp.get(i).intValue());
+            }
+            temp = findLowestMatching(suitList);
+        }
+
+        if(suitList.size() == 0) return null;
+        return suitList.get(0);
+    }
 }
+
+
+
